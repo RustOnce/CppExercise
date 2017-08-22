@@ -17,6 +17,7 @@ typedef struct TreeNode
 }TreeNode;
 
 TreeNode *BuildBST();
+void DeStructTree(TreeNode *root);
 
 int main(void)
 {
@@ -42,4 +43,17 @@ TreeNode *BuildBST()
     node->right->right = new TreeNode(130);
 
     return root;
+}
+
+void DestructTree(TreeNode *root)
+{
+    if(!root)
+        return;
+
+    if(root->left)
+        DestructTree(root->left);
+    if(root->right)
+        DestructTree(root->right);
+    
+    delete root;
 }
