@@ -1,5 +1,4 @@
 #include "./common/BinaryTree.hpp"
-#include <assert.h>
 #include <chrono>
 #include <future>
 #include <iostream>
@@ -15,8 +14,8 @@ using namespace std;
 int main(void)
 {
     auto root = BuildBST();
-    PreOrderTraverse(root);
 
+    InOrderTraverse(root);
     getchar();
     return 0;
 }
