@@ -79,7 +79,7 @@ void PostOrderTraverse(TreeNode* root)
         {
             if (node->right)
                 s.push(node->right);
-            if (temp->left)
+            if (node->left)
                 s.push(node->left);
         }
         node = s.top();
@@ -116,6 +116,12 @@ void DestructTree(TreeNode* root)
         DestructTree(root->right);
 
     delete root;
+}
+
+TreeNode* convertBST(TreeNode* root)
+{
+    if (!root)
+        return root;
 }
 
 #endif
