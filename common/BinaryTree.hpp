@@ -4,7 +4,8 @@
 #include <iostream>
 #include <stack>
 
-typedef struct TreeNode {
+typedef struct TreeNode
+{
     int val;
     TreeNode* left;
     TreeNode* right;
@@ -58,6 +59,31 @@ void InOrderTraverse(TreeNode* root)
 
 void PostOrderTraverse(TreeNode* root)
 {
+    if (!root)
+        return;
+
+    std::stack<TreeNode*> s;
+    auto node = root;
+    TreeNode* last_node = nullptr;
+    s.push(node);
+    while (!s.empty())
+    {
+        if (node->left == nullptr && node->right == nullptr || (last_node && (node->left == last_node || node->right == last_node)))
+        {
+            s.pop();
+            std::cout << node->val << " ";
+            last_node = node;
+            node = nullptr;
+        }
+        else
+        {
+            if (node->right)
+                s.push(node->right);
+            if (temp->left)
+                s.push(node->left);
+        }
+        node = s.top();
+    }
 }
 
 TreeNode* BuildBST()
