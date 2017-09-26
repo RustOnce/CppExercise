@@ -34,7 +34,7 @@ void GetSkipPattern(const string &s, vector<int> &pattern)
             }
             else
             {
-                i = pattern[i] - 1;
+                i = i - pattern[i];
             }
         }
     }
@@ -42,27 +42,30 @@ void GetSkipPattern(const string &s, vector<int> &pattern)
 
 int strStr(string haystack, string needle)
 {
-    if (needle.size() > haystack.size())
+    auto h_len = haystack.size();
+    auto n_len = needle.size();
+    if (n_len > h_len)
         return -1;
-    if (needle.empty() || haystack == needle)
+    if (n_len == 0)
         return 0;
 
-    vector<int> v(needle.size(), 0);
+    vector<int> v(n_len, 0);
+
     GetSkipPattern(needle, v);
 
-    for (int i = 0; i < haystack.size();)
+    for (int i = 0; i < h_len;)
     {
         if (haystack[i] == needle[0])
         {
             int j = 1;
-            for (; j < needle.size(); ++j)
+            for (; j < n_len; ++j)
             {
                 if (needle[j] != haystack[i + j])
                 {
                     break;
                 }
             }
-            if (j == needle.size())
+            if (j == n_len)
                 return i;
             else
             {
