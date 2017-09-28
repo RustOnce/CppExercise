@@ -10,8 +10,32 @@
 // 2dbe109240b13818635973599c88bb58
 
 using namespace std;
+
+void GetPatterns2(string s)
+{
+    int nsize = s.size();
+    vector<int> table(nsize, 0);
+    //building match table
+    for (int i = 1, j = 0; i < nsize - 1;){
+        if (s[i] != s[j]){
+            if (j>0){
+                j = table[j - 1];
+            }
+            else{
+                i++;
+            }
+        }
+        else{
+            table[i] = j + 1;
+            i++;
+            j++;
+        }
+    }
+}
+
 void GetSkipPattern(const string &s, vector<int> &pattern)
 {
+    GetPatterns2(s);
     if (s.empty())
         return;
     pattern[0] = 1;
@@ -20,22 +44,19 @@ void GetSkipPattern(const string &s, vector<int> &pattern)
 
     while (j < s.size())
     {
-        if (s[j] == s[i - pattern[i] + 1])
+        if (s[j] == s[i])
         {
-            pattern[j] = pattern[i];
-            i = j++;
+            pattern[j] = j - i;
+            ++j;
+            ++i;
         }
         else
         {
-            if (pattern[i] == i + 1)
-            {
-                pattern[j] = j + 1;
-                i = j++;
-            }
+            pattern[j] = j;
+            if(i)
+              i = pattern[i - 1];
             else
-            {
-                i = i - pattern[i];
-            }
+              pattern[j] = j;
         }
     }
 }
@@ -52,29 +73,25 @@ int strStr(string haystack, string needle)
     vector<int> v(n_len, 0);
 
     GetSkipPattern(needle, v);
-
+    int matched_pos = 0;
     for (int i = 0; i < h_len;)
     {
-        if (haystack[i] == needle[0])
+        if (haystack[i] == needle[i - matched_pos])
         {
-            int j = 1;
-            for (; j < n_len; ++j)
-            {
-                if (needle[j] != haystack[i + j])
-                {
-                    break;
-                }
-            }
-            if (j == n_len)
-                return i;
-            else
-            {
-                i += v[j - 1];
-            }
+            if(i - matched_pos == n_len - 1)
+                return matched_pos;
+            ++i;
         }
         else
         {
-            ++i;
+            if(i == matched_pos)
+            {
+                matched_pos = ++i;
+            }
+            else
+            {
+                matched_pos += v[i - matched_pos - 1];     
+            }
         }
     }
     return -1;
