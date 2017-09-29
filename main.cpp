@@ -52,16 +52,18 @@ void GetSkipPattern(const string &s, vector<int> &pattern)
         }
         else
         {
-            pattern[j] = j;
             if(i)
-              i = pattern[i - 1];
+              i = i - pattern[i - 1];
             else
-              pattern[j] = j;
+            {
+                pattern[j] = j + 1;
+                ++j;
+            }
         }
     }
 }
 
-int strStr(string haystack, string needle)
+int strStrKMP(string haystack, string needle)
 {
     auto h_len = haystack.size();
     auto n_len = needle.size();
