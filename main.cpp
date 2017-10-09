@@ -35,10 +35,9 @@ void GetPatterns2(string s)
 
 void GetSkipPattern(const string &s, vector<int> &pattern)
 {
-    GetPatterns2(s);
     if (s.empty())
         return;
-    pattern[0] = 1;
+    
     int j = 1;
     int i = 0;
 
@@ -46,17 +45,16 @@ void GetSkipPattern(const string &s, vector<int> &pattern)
     {
         if (s[j] == s[i])
         {
-            pattern[j] = j - i;
+            pattern[j] = i + 1;
             ++j;
             ++i;
         }
         else
         {
             if(i)
-              i = i - pattern[i - 1];
+              i = pattern[i - 1];
             else
             {
-                pattern[j] = j + 1;
                 ++j;
             }
         }
@@ -78,21 +76,22 @@ int strStrKMP(string haystack, string needle)
     int matched_pos = 0;
     for (int i = 0; i < h_len;)
     {
-        if (haystack[i] == needle[i - matched_pos])
+        if (haystack[i] == needle[matched_pos])
         {
-            if(i - matched_pos == n_len - 1)
-                return matched_pos;
+            if(matched_pos == n_len - 1)
+                return i - n_len + 1;
             ++i;
+            ++matched_pos;
         }
         else
         {
-            if(i == matched_pos)
+            if(matched_pos)
             {
-                matched_pos = ++i;
+                matched_pos = v[matched_pos -1];
             }
             else
             {
-                matched_pos += v[i - matched_pos - 1];     
+                ++i;
             }
         }
     }
@@ -100,9 +99,9 @@ int strStrKMP(string haystack, string needle)
 }
 int main(void)
 {
-    string h = "ababcaababcaabc";
-    string n = "ababcaabc";
-    auto pos = strStr(h, n);
+    string h = "mississippi";
+    string n = "issip";
+    auto pos = strStrKMP(h, n);
 
     getchar();
     return 0;
