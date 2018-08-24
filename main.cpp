@@ -1,4 +1,5 @@
 ﻿#include "./common/BinaryTree.hpp"
+#include "test.h"
 #include <chrono>
 #include <future>
 #include <iostream>
@@ -6,103 +7,59 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <locale>
+#include <map>
 
-// 2dbe109240b13818635973599c88bb58
-
+// 64bcae05043280b5f2d278944f53dd94004ae8db
+//0b64cb4059809ab854d9e4383ca4c1dc
 using namespace std;
 
-void GetPatterns2(string s)
+class Foo
 {
-    int nsize = s.size();
-    vector<int> table(nsize, 0);
-    //building match table
-    for (int i = 1, j = 0; i < nsize - 1;){
-        if (s[i] != s[j]){
-            if (j>0){
-                j = table[j - 1];
-            }
-            else{
-                i++;
-            }
-        }
-        else{
-            table[i] = j + 1;
-            i++;
-            j++;
-        }
-    }
-}
-
-void GetSkipPattern(const string &s, vector<int> &pattern)
-{
-    if (s.empty())
-        return;
-    
-    int j = 1;
-    int i = 0;
-
-    while (j < s.size())
+public:
+    Foo()
     {
-        if (s[j] == s[i])
-        {
-            pattern[j] = i + 1;
-            ++j;
-            ++i;
-        }
-        else
-        {
-            if(i)
-              i = pattern[i - 1];
-            else
-            {
-                ++j;
-            }
-        }
+        std::cout << "Foo::Foo()" << endl;
     }
-}
-
-int strStrKMP(string haystack, string needle)
-{
-    auto h_len = haystack.size();
-    auto n_len = needle.size();
-    if (n_len > h_len)
-        return -1;
-    if (n_len == 0)
-        return 0;
-
-    vector<int> v(n_len, 0);
-
-    GetSkipPattern(needle, v);
-    int matched_pos = 0;
-    for (int i = 0; i < h_len;)
+    void f()
     {
-        if (haystack[i] == needle[matched_pos])
-        {
-            if(matched_pos == n_len - 1)
-                return i - n_len + 1;
-            ++i;
-            ++matched_pos;
-        }
-        else
-        {
-            if(matched_pos)
-            {
-                matched_pos = v[matched_pos -1];
-            }
-            else
-            {
-                ++i;
-            }
-        }
+        std::cout << "Foo::f()" << endl;
     }
-    return -1;
-}
+};
+
+class Foo1 : public Foo
+{
+public:
+    void f()
+    {
+        std::cout << "Foo1:f()" << endl;
+    }
+};
+
+class A
+{
+public:
+    void Action()
+    {
+        m_foo.f();
+    }
+
+    Foo m_foo;
+};
+
+class B : public A
+{
+public:
+    Foo1 m_foo;
+};
+
 int main(void)
 {
-    string h = "mississippi";
-    string n = "issip";
-    auto pos = strStrKMP(h, n);
-
+    std::map<int, int> map;
+    int i = 12345;
+    float f = 12345;
+    std::cout << f << endl;
+    
     getchar();
     return 0;
 }
