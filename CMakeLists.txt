@@ -12,7 +12,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #设置库输出路径
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-SET(MY_TARGET CPPTest)
+SET(MY_TARGET exercise)
 
 MESSAGE("++++++++++++++Start Build+++++++++++++++++")
 #当前目录的文件
